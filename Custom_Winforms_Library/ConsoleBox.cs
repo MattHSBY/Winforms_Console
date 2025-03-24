@@ -15,7 +15,7 @@ namespace Custom_Winforms_Library
     public partial class ConsoleBox : RichTextBox
     {
         int messages = 0;
-        private static Color bgColour = Color.White;
+        private static Color bgColour = Color.Black;
 
         public Color Default_text_color 
         { 

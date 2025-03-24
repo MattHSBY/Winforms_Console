@@ -60,7 +60,6 @@ namespace Custom_Winforms_Library
                 args = args.App(currentArg.ToString());
             }
 
-
             //args.Print(1);
 
             return args;
@@ -77,7 +76,7 @@ namespace Custom_Winforms_Library
             if (commandName.EqualsIgnoreCase("help")) 
                 registry.RegisterHelpCommand();
             
-            ICommand command = registry.GetCommand(commandName);
+            Command command = registry.GetCommand(commandName);
             
             command.Execute(arguments);
         }

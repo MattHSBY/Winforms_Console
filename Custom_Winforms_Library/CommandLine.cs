@@ -25,16 +25,22 @@ namespace Custom_Winforms_Library
         }
 
         public event EventHandler<string> CommandEntered;
+
         public CommandLine()
         {
             InitializeComponent();
             Setup();
         }
 
-        
         public void Setup()
         {
             KeyDown += new KeyEventHandler(OnKeyDown);
+        }
+
+        private void SetTextToCurrentMessage()
+        {
+            Text = current_message;
+            SelectionStart = Text.Length;
         }
         
         private void OnKeyDown(object sender, KeyEventArgs e)
@@ -42,6 +48,7 @@ namespace Custom_Winforms_Library
             //Debug.WriteLine("KeyDown");
             if (e.KeyCode == Keys.Enter)
             {
+                e.SuppressKeyPress = true;
                 //Debug.WriteLine("Enter key down.");
                 if (!Text.Equals(""))
                 {
@@ -74,9 +81,9 @@ namespace Custom_Winforms_Library
                 if (history_index > 0)
                 {
                     history_index--;
-                    Text = current_message;
-
                 }
+                SetTextToCurrentMessage();
+
             }
             else if (e.KeyCode == Keys.Down)
             {
@@ -85,19 +92,15 @@ namespace Custom_Winforms_Library
                 {
                     history_index++;
                 } 
-                Text = current_message;
-                
-                
+                SetTextToCurrentMessage();
             }
         }
-
 
         public void EnterCommand(string command)
         {
             CommandEntered?.Invoke(this, command);
             //Debug.WriteLine($"{command} entered.");
         }
-
 
         protected override void OnPaint(PaintEventArgs pe)
         {
