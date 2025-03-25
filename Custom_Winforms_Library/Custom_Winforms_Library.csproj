@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MattUtils" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="MattUtils">
       <HintPath>..\..\MattUtils\MattUtils\bin\Debug\net6.0\MattUtils.dll</HintPath>
     </Reference>
