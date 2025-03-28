@@ -44,7 +44,14 @@ namespace Custom_Winforms_Library
                 consoleBox.Clear_Console();
                 return;
             }
-            consoleBox.WriteLine(message);
+            try
+            {
+                consoleBox.WriteLine(message);
+            }
+            catch
+            {
+                Debug.WriteLine("Couldn't log message.");
+            }
         }
 
         private void CommandEntered(object? sender, string command)

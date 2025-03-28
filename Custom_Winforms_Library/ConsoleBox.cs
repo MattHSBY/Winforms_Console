@@ -45,9 +45,30 @@ namespace Custom_Winforms_Library
 
             }
         }
+
+        /*
         private void TrimLines(int maxLines)
         {
             if (Lines.Length > maxLines)
+            {
+                Select(0,Lines.Length-maxLines);
+                SelectedText = "";
+                messages = maxLines;
+                
+            }
+        }
+        */
+        private int trimCounter = 0;
+
+        private const int trimThreshold = 50;
+
+        public void TrimLines(int maxLines)
+        {
+            if (++trimCounter < trimThreshold) return;
+            trimCounter = 0;
+
+            string[] lines = Lines;
+            if (lines.Length > maxLines)
             {
                 Select(0,Lines.Length-maxLines);
                 SelectedText = "";
@@ -56,44 +77,49 @@ namespace Custom_Winforms_Library
         }
 
 
+
         public void WriteLine(List<(string text, TextProperties properties)> message)
         {
             if (InvokeRequired)
             {
                 Invoke(new Action(() => WriteLine(message)));
-            } 
+            }
             else
             {
-                TrimLines(500);
-                SelectionStart = Text.Length;
-                SelectionLength = 0;
-                if (messages != 0)
+                try
                 {
-                    AppendText($"{Environment.NewLine}");
+                    TrimLines(500);
+                    SuspendLayout();  // <-- Stop UI layout updates
 
+                    SelectionStart = Text.Length;
+                    SelectionLength = 0;
+
+                    if (messages != 0)
+                    {
+                        AppendText($"{Environment.NewLine}");
+                    }
+
+                    foreach (var part in message)
+                    {
+                        SelectionColor = part.properties.TextColor ?? Default_text_color;
+                        SelectionFont = part.properties.TextFont ?? Font;
+                        AppendText(part.text);
+                    }
+
+                    ScrollToCaret();
+                    messages++;
                 }
-                
-                //SelectionColor = colour;
-                foreach (var part in message)
+                finally
                 {
-
-                    SelectionColor = Default_text_color;
-                    SelectionColor = part.properties.TextColor ?? SelectionColor;
-                    SelectionFont = part.properties.TextFont;
-                    
-                    AppendText(part.text);
+                    ResumeLayout();  // <-- Resume UI layout updates
                 }
-                
-
-                ScrollToCaret();
-                messages++;
             }
         }
+
 
         public void WriteLine(string message)
         {
             List<(string text, TextProperties properties)> messageParts = new List<(string text, TextProperties properties)> { (message, new TextProperties(Default_text_color))};
-
 
             WriteLine(messageParts);
         }
@@ -101,7 +127,6 @@ namespace Custom_Winforms_Library
         public void WriteLine(string message, TextProperties properties)
         {
             List<(string text, TextProperties properties)> messageParts = new List<(string text, TextProperties properties)> { (message, properties)};
-
 
             WriteLine(messageParts);
         }
