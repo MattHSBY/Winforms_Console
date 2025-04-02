@@ -28,6 +28,7 @@ namespace Custom_Winforms_Library
             RegisterCommand(new ExitCommand(logger), "exit");
             RegisterCommand(new ClearCommand(logger), "clear");
             RegisterCommand(new AliasCommand(logger,this), "alias");
+            RegisterCommand(new SpamCommand(logger), "Spam");
 
             RegisterAlias("clear","clr");
             RegisterAlias("help", "commands", "cmds");

@@ -30,9 +30,10 @@ namespace Custom_Winforms_Library
                         kvp.Value.Execute(args.SelectItems(1));
                     }
                 }
-            } 
+            }
             if (!subcommandfound)
-                Run(args);
+                Task.Run(() => Run(args));
+                
 
         }
 
@@ -407,6 +408,52 @@ namespace Custom_Winforms_Library
                 return;
             }
             New.Execute(args);
+        }
+    }
+
+    public class SpamCommand : Command
+    {
+        private bool running = false;
+        private SubSpam_StopCommand Stop;
+
+        public SpamCommand(Logger logger) : base(logger)
+        {
+            Stop = new(logger, this);
+
+            RegisterSubCommand("Stop", Stop);
+        }
+
+        private class SubSpam_StopCommand : SubCommand
+        {
+            private SpamCommand Parent;
+            public SubSpam_StopCommand(Logger logger, SpamCommand Parent_Command) : base(logger, Parent_Command)
+            {
+                Parent = Parent_Command;
+            }
+
+
+            protected override void Run(string[] args)
+            {
+                logger.LogMessage("stopping spam...");
+                Parent.running = false;
+            }
+        }
+
+        public override string GetHelp()
+        {
+            return "Spams your input.";
+        }
+
+        protected override void Run(string[] args)
+        {
+            running = true;
+            int count = 0;
+            while (running == true)
+            {
+                //Thread.Sleep(100);
+                logger.LogMessage(args.Join(" ") + $" : {count}");
+                count++;
+            }
         }
     }
 

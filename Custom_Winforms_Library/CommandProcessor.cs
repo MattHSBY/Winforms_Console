@@ -53,8 +53,6 @@ namespace Custom_Winforms_Library
                 }
             }
 
-
-
             if (currentArg.Length > 0)
             {
                 args = args.App(currentArg.ToString());
@@ -63,8 +61,6 @@ namespace Custom_Winforms_Library
             //args.Print(1);
 
             return args;
-
-
         }
 
 

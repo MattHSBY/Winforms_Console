@@ -56,11 +56,8 @@ namespace Custom_Winforms_Library
 
         private void CommandEntered(object? sender, string command)
         {
-            Task.Run(() =>
-            {
-                Debug.WriteLine("Command entered");
-                commandProcessor.ProcessCommand(command);
-            });
+            Debug.WriteLine("Command entered");
+            commandProcessor.ProcessCommand(command);
         }
     }
 }

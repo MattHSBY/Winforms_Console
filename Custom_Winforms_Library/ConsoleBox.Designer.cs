@@ -16,6 +16,7 @@
             if (disposing && (components != null))
             {
                 components.Dispose();
+                cancellationTokenSource?.Cancel();
             }
             base.Dispose(disposing);
         }
